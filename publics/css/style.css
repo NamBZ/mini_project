@@ -1,4 +1,4 @@
-/* NCK BLOG */
+
 
 body {
    padding-top: 60px;
@@ -7,7 +7,9 @@ body {
 }
 
 * {word-wrap:break-word;}
-
+img {
+  max-width: 100%;
+}
 .kmedia, .kmedia-body {overflow: hidden;zoom: 1;}
 .kmedia {margin-top: 15px;}
 .kmedia:first-child {margin-top: 0;}

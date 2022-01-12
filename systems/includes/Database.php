@@ -134,7 +134,7 @@ class Database
         $this->statement->execute();
         $this->reset();
 
-        return $this;
+        return $this->statement;
     }
 
     public function updateRow($id, $data = [])
@@ -148,26 +148,27 @@ class Database
 
         // get values
         $values = array_values($data);
-        $values[] = $id;
+        $values[] = (int)$id;
+
+        $sql = "UPDATE `$this->table` SET $setFields WHERE `id` = ?";
 
         $this->statement = $this->connection->prepare($sql);
         $this->statement->bind_param($this->param_mask($values), ...$values);
         $this->statement->execute();
         $this->reset();
 
-        return $this;
+        return $this->statement;
     }
 
     public function deleteId($id)
     {
-
         $sql = "DELETE FROM `$this->table` WHERE `id` = ?";
         $this->statement = $this->connection->prepare($sql);
         $this->statement->bind_param('i', $id);
         $this->statement->execute();
         $this->reset();
 
-        return $this;
+        return $this->statement;
     }
 
     public function query($sql)

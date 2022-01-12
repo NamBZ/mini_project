@@ -14,9 +14,9 @@ class User extends Controller
 		$this->load->model('muser');
 		$this->Muser  = new Muser;
 		$this->data['meta'] = array(
-			'title'         => 'Hệ Thống Đăng Nhập |  TDBlog V3',
-			'description'   => 'Hệ Thống Đăng Nhập |  TDBlog V3',
-			'keyword'       => 'Hệ Thống Đăng Nhập |  TDBlog V3',
+			'title'         => 'Hệ Thống Đăng Nhập',
+			'description'   => 'Hệ Thống Đăng Nhập',
+			'keyword'       => 'Hệ Thống Đăng Nhập',
 		);
 		$this->load->header($this->data['meta']);
 	}
@@ -48,6 +48,7 @@ class User extends Controller
 				$_SESSION['password']   = $infoUser['password'];
 				$_SESSION['username']       = $infoUser['username'];
 				$_SESSION['full_name']  = $infoUser['full_name'];
+				$_SESSION['level']  = $infoUser['level'];
 				if (isset($_POST['saveLogin'])) {
 					setcookie('permission', 1, time() + 86400, '/');
 					setcookie('id', $_SESSION['id'], time() + 86400, '/');

@@ -24,8 +24,22 @@ if(empty($data['content'])){
             <i class="fa fa-pencil-square-o"></i> Tác giả: <b><span style="color:red;"><?php echo $data['username']; ?></span></b> <br />
             <i class="fa fa-clock-o"></i> Thời gian: <?php echo convertTimeToString($data['times']); ?>
         </div>
+        <?php if($data['id_author'] == $_SESSION['id'] || $_SESSION['level'] > 5) { ?>
         <div class="list-group-item">
-            <?php echo $data['content']; ?>
+            <a class="btn btn-primary" href="<?php echo base_url(); ?>/admin/editpost/<?php echo $data['post_id']; ?>" title="Chỉnh sửa bài viết"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+
+            <a class="btn btn-danger" href="<?php echo base_url(); ?>/admin/deletepost/<?php echo $data['post_id']; ?>" title="Xóa bài viết"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+
+            <?php if($data['status'] == 0 && $_SESSION['level'] == 9){ ?>                    
+                <a class="btn btn-success" href="<?php echo base_url(); ?>/admin/status/<?php echo $data['slug']; ?>/public" title="Phê duyệt bài viết"><i class="fa fa-check-square-o" aria-hidden="true"></i> Public</a>
+            <?php }else if ($data['status'] == 1 && $_SESSION['level'] == 9){ ?>
+                    
+                    <a class="btn btn-default" href="<?php echo base_url(); ?>/admin/status/<?php echo $data['slug']; ?>/hide" title="Ẩn bài viết"><i class="fa fa-minus-square-o" aria-hidden="true"></i> Unpublic</a>
+            <?php } ?>
+        </div>
+        <?php } ?>
+        <div class="list-group-item">
+            <?php echo stripslashes($data['content']); ?>
         </div>
         <div class="list-group-item">
             Tags: <?php echo $data['tags']; ?>
