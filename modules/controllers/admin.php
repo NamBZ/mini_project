@@ -572,7 +572,7 @@ class Admin extends Controller
             default:
                 $this->data['meta']['title']  = 'Quản Lý Chuyên Mục';
                 $this->load->header($this->data['meta']);
-                $this->load->view('admin/category-main');
+                $this->load->view('admin/category-list');
                 break;
         }
 

@@ -43,18 +43,14 @@ class User extends Controller
 
 			if (!empty($infoUser) && password_verify($data['password'], $infoUser['password'])) {
 				show_alert(1, array('Đăng nhập thành công'));
-				$_SESSION['permission'] = true;
-				$_SESSION['id']    = $infoUser['id'];
-				$_SESSION['password']   = $infoUser['password'];
-				$_SESSION['username']       = $infoUser['username'];
-				$_SESSION['full_name']  = $infoUser['full_name'];
-				$_SESSION['level']  = $infoUser['level'];
+				$_SESSION['id'] = $infoUser['id'];
+				$_SESSION['password'] = $infoUser['password'];
+				$_SESSION['username'] = $infoUser['username'];
+				$_SESSION['full_name'] = $infoUser['full_name'];
+				$_SESSION['level'] = $infoUser['level'];
 				if (isset($_POST['saveLogin'])) {
-					setcookie('permission', 1, time() + 86400, '/');
-					setcookie('id', $_SESSION['id'], time() + 86400, '/');
 					setcookie('username', $_SESSION['username'], time() + 86400, '/');
-					setcookie('password', $infoUser['password'], time() + 86400, '/');
-					setcookie('full_name', $_SESSION['full_name'], time() + 86400, '/');
+					setcookie('password', md5($infoUser['password']), time() + 86400, '/');
 				}
 				redirect(base_url().'/user');
 			} else {
@@ -74,11 +70,11 @@ class User extends Controller
 		
 
 		if (!empty($_POST)) {
-			$data["full_name"]       = (isset($_POST['fullName'])) ? $_POST['fullName'] : '';
-			$data["username"]        = (isset($_POST['username'])) ? $_POST['username'] : '';
-			$data["password"]        = (isset($_POST['password'])) ? $_POST['password'] : '';
-			$data["rePassword"]      = (isset($_POST['rePassword'])) ? $_POST['rePassword'] : '';
-			$data["email"]           = (isset($_POST['email'])) ? $_POST['email'] : '';
+			$data["full_name"]       = (isset($_POST['fullName'])) ? htmlspecialchars($_POST['fullName']) : '';
+			$data["username"]        = (isset($_POST['username'])) ? htmlspecialchars($_POST['username']) : '';
+			$data["password"]        = (isset($_POST['password'])) ? htmlspecialchars($_POST['password']) : '';
+			$data["rePassword"]      = (isset($_POST['rePassword'])) ? htmlspecialchars($_POST['rePassword']) : '';
+			$data["email"]           = (isset($_POST['email'])) ? htmlspecialchars($_POST['email']) : '';
 
 			if ($data["full_name"] == null || mb_strlen($data["full_name"]) < 4 || mb_strlen($data["full_name"]) > 255) {
 				$this->_listError[] = 'Họ và tên không hợp lệ';
@@ -119,11 +115,8 @@ class User extends Controller
 	}
 	function logout(){
         session_destroy();
-        setcookie('permission',1,time()+86400, '/');
-        setcookie('id','',time()-86400, '/');
         setcookie('username','',time()-86400, '/');
         setcookie('password','',time()-86400, '/');
-        setcookie('full_name','',time()-86400, '/');
         show_alert(1,array('Đăng xuất thành công'));
         $this->showForm(1);
 		redirect(base_url().'/user/login/');

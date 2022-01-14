@@ -69,7 +69,7 @@ if ( ! function_exists('getInfo'))
 {
     function getInfo($username, $password){
         global $DB;
-        $query = $DB->table('users')->getAll('`username` = \''.$username.'\' AND `password` = \''.$password.'\'');
+        $query = $DB->table('users')->getAll('`username` = \''.$username.'\' AND MD5(`password`) = \''.$password.'\'');
         $info = $query->fetch_array(MYSQLI_ASSOC);
         return $info;
     }
@@ -82,11 +82,13 @@ if ( ! function_exists('getInfo'))
 if ( ! function_exists('isLogin'))
 {
     function isLogin(){
-        if(isset($_SESSION['permission']) && isset($_SESSION['username'])) {
+        if(isset($_SESSION['level']) && isset($_SESSION['username'])) {
             return true;
         }
-        if(isset($_COOKIE['permission']) && isset($_COOKIE['username']) && isset($_COOKIE['password'])){
-            $infoUser   = getInfo(urldecode($_COOKIE['username']), urldecode($_COOKIE['password']));
+        if(isset($_COOKIE['username']) && isset($_COOKIE['password'])){
+            $username = htmlspecialchars(urldecode($_COOKIE['username']));
+            $password = htmlspecialchars(urldecode($_COOKIE['password']));
+            $infoUser   = getInfo($username, $password);
             if(!empty($infoUser)){
                 $_SESSION['permission'] = true;
                 $_SESSION['id'] = $infoUser['id'];
@@ -100,19 +102,6 @@ if ( ! function_exists('isLogin'))
             }
         }
         return false;
-    }
-}
-/**
- * 
- * Lấy thông tin đăng nhập người dùng
- */
-if ( ! function_exists('getInfo'))
-{
-    function getInfo($username, $password){
-        global $DB;
-        $query = $DB->table('users')->getAll('`username` = \''.$username.'\' AND `password` = \''.$password.'\'');
-        $info = $query->fetch_array(MYSQLI_ASSOC);
-        return $info;
     }
 }
 

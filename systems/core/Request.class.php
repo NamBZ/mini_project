@@ -126,17 +126,15 @@ class Request extends Controller
                     {
                         if($this->_param2 != null)
                         {
-                            $this->_action .= '(\''.$this->_param.'\',\''.$this->_param2.'\')';
+                            $this->_Temp->{$this->_action}($this->_param, $this->_param2);
                         }
                         else
                         {
-                            $this->_action .= '(\''.$this->_param.'\')';
+                            $this->_Temp->{$this->_action}($this->_param);
                         }
 
                         
-                        $strCode = '<?php $this->_Temp->'.$this->_action . ' ?>';
-
-                        eval('?>' .$strCode);
+                        $this->_Temp->{$this->_action}();
                         
                     }
                     
