@@ -31,8 +31,15 @@ class MUser extends Model
     }
     
     function updateInfo($data){
-        $sql    = 'UPDATE users SET username =\''.$data['username'].'\', password =\''.$data['password_new'].'\', full_name =\''.$data['full_name'].'\', email =\''.$data['email'].'\' WHERE id =\''.$data['id'].'\'';
-        $this->db->query($sql);
+    	$data_update = array(
+    	    'full_name' => $data['full_name'],
+    	    'email' => $data['email']
+    	);
+    	if (!empty($data['password'])) {
+    		$data_update['password'] = $data['password'];
+    	}
+	    
+	    return $this->db->table('users')->updateRow($data['id'], $data_update)->affected_rows >= 1;
     }
 
 

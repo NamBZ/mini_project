@@ -129,4 +129,62 @@ class User extends Controller
 			$this->load->view('user/form-register');
 		}
 	}
+
+	function change_info()
+    {
+        $infoUser  = $this->Muser->getInfor($_SESSION['username'], $_SESSION['password']);
+        if(!empty($_POST))
+        {
+            $data['id']              =  $infoUser['id'];
+            $data["full_name"]       = (isset($_POST['fullName'])) ? htmlspecialchars(trim($_POST['fullName'])) : $_SESSION['full_name'];
+            $data["password_old"]    = (isset($_POST['password_old'])) ? htmlspecialchars(trim($_POST['password_old'])) : '';
+            $data["password_new"]    = (isset($_POST['password_new'])) ? htmlspecialchars(trim($_POST['password_new'])) : '';
+            $data["rePassword_new"]  = (isset($_POST['rePassword_new'])) ? htmlspecialchars(trim($_POST['rePassword_new'])) : '';
+            $data["email"]           = (isset($_POST['email'])) ? htmlspecialchars(trim($_POST['email'])) : $infoUser["email"];
+            
+            if($data["full_name"] == null || mb_strlen($data["full_name"]) < 4 || mb_strlen($data["full_name"]) > 255) {
+                $this->_listError[] = 'Họ và tên không hợp lệ';
+            }
+            if(filter_var($data["email"], FILTER_VALIDATE_EMAIL) == false) {
+                $this->_listError[] = 'Email không hợp lệ';
+            }
+            // Nếu đổi mật khẩu
+            $isResetPassword = false;
+            if (!empty($data["password_old"]) || !empty($data["password_new"]) || !empty($data["rePassword_new"])) {
+
+	            if(!password_verify($data['password_old'], $infoUser['password'])) {
+	                $this->_listError[] = 'Mật khẩu cũ không hợp lệ';
+	            }
+	            if(strlen($data["password_new"]) < 6 || strlen($data["password_new"]) > 100) {
+	                $this->_listError[] = 'Mật khẩu mới quá ngắn';
+	            }
+	            if($data["rePassword_new"] == null || $data["rePassword_new"] != $data["password_new"]) {
+	                $this->_listError[] = 'Mật khẩu nhập lại không khớp';
+	            }
+	            $isResetPassword = true;
+	        }            
+            if(count($this->_listError)){
+                show_alert(2,$this->_listError);
+                unset($this->_listError);
+            }else{
+            	if ($isResetPassword) {
+            		$data["password"] = password_hash($data["password_new"], PASSWORD_DEFAULT);
+            		$_SESSION['password'] = $data['password'];
+            	}
+                
+                $check = $this->Muser->updateInfo($data);
+                if($check){
+                    show_alert(1,array('Thay đổi thông tin thành công'));
+                    $infoUser  = $this->Muser->getInfor($_SESSION['username'], $_SESSION["password"]);
+                    $_SESSION['id'] = $infoUser['id'];
+                    $_SESSION['password'] = $infoUser['password'];
+                    $_SESSION['username'] = $infoUser['username'];
+                    $_SESSION['full_name'] = $infoUser['full_name'];
+                    $_SESSION['level'] = $infoUser['level'];
+                }
+            }
+            
+        }
+        $this->load->view('user/change_info', $infoUser);
+    }
 }
