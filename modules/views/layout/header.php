@@ -13,12 +13,13 @@
 <meta name="language" content="Vietnamese" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css"/>
 <link rel="stylesheet" href="<?php echo base_url(); ?>/publics/css/style.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo base_url(); ?>/publics/css/mod.css" type="text/css" />
 <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>/publics/images/favicon.ico" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 <title><?php echo $meta['title']; ?></title>
 <meta name="description" content="<?php echo $meta['description']; ?>" />
 <meta property="og:locale" content="vi_VN" />
@@ -26,6 +27,12 @@
 <meta property="og:title" content="<?php echo $meta['title']; ?>" />
 <meta property="og:description" content="<?php echo $meta['description']; ?>" />
 
+<?php
+    if (!empty($_SESSION['alert'])) {
+        echo '<script>$(document).ready(function(){ toastr.success("'.$_SESSION['alert'].'"); });</script>';
+        unset($_SESSION['alert']);
+    }
+?>
 </head>
 
 <body style="max-width:1200px; margin:0 auto; background-color: #fff;">

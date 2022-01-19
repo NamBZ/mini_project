@@ -24,7 +24,7 @@ if(empty($data['content'])){
             <i class="fa fa-pencil-square-o"></i> Tác giả: <b><span style="color:red;"><?php echo $data['username']; ?></span></b> <br />
             <i class="fa fa-clock-o"></i> Thời gian: <?php echo convertTimeToString($data['times']); ?>
         </div>
-        <?php if($data['id_author'] == $_SESSION['id'] || $_SESSION['level'] > 5) { ?>
+        <?php if(isLogin() && ($data['id_author'] == $_SESSION['id'] || $_SESSION['level'] > 5)) { ?>
         <div class="list-group-item">
             <a class="btn btn-primary" href="<?php echo base_url(); ?>/admin/editpost/<?php echo $data['post_id']; ?>" title="Chỉnh sửa bài viết"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
 

@@ -143,7 +143,8 @@ class Admin extends Controller
             }else{
 
                 if($this->Madmin->insertPost($data)){
-                    show_alert(1,array('Đăng Bài Viết Thành Công, <a href="'.base_url().'/'.$data['slug']['value'].'.html">Xem bài viết</a>'));
+                    $_SESSION['alert'] = 'Đăng bài viết thành công, bạn có thể xem lại bài viết của mình.';
+                    redirect(base_url().'/'.$data['slug']['value'].'.html');
                     foreach ($data as $key => $value) {
                         if(isset($data[$key]['value']))
                             $data[$key]['value'] = '';
@@ -164,7 +165,7 @@ class Admin extends Controller
             $this->data['meta']['title'] = 'Stop !!!';
             $this->load->header($this->data['meta']);
             show_alert(3,array('bạn không có quyền vào trang này'));
-            $this->load->header($this->data['meta']);
+            $this->load->footer($this->data['meta']);
             die();
         }
 
@@ -185,12 +186,15 @@ class Admin extends Controller
         if(empty($checkAlias)) {
             show_alert(2, array('Bài viết không tồn tại'));
         }elseif ($checkAlias['status'] == $status) {
-            show_alert(2, array('Bài viết đã được '. ($status == 1? 'phê duyệt' : 'ẩn') . ' trước đó rồi'));
+            $_SESSION['alert'] = 'Bài viết đã được '. ($status == 1? 'phê duyệt' : 'ẩn') . ' trước đó rồi';
+            redirect(base_url().'/'.$checkAlias['slug'].'.html');
         } else {
             if($this->Madmin->updateStatus($checkAlias['id'], $update)){
-            show_alert(1, array(($status == 1? 'Phê duyệt' : 'Ẩn') . ' bài viết thành công'));
+                $_SESSION['alert'] = ($status == 1? 'Phê duyệt' : 'Ẩn') . ' bài viết thành công';
+                redirect(base_url().'/'.$checkAlias['slug'].'.html');
             }else{
-                show_alert(3, array(($status == 1? 'Phê duyệt' : 'Ẩn') . ' bài viết thất bại'));
+                $_SESSION['alert'] = ($status == 1? 'Phê duyệt' : 'Ẩn') . ' bài viết thất bại';
+                redirect(base_url().'/'.$checkAlias['slug'].'.html');
             }
         }
         $this->load->footer($this->data['meta']);
@@ -374,7 +378,7 @@ class Admin extends Controller
             $this->data['meta']['title'] = 'Stop !!!';
             $this->load->header($this->data['meta']);
             show_alert(3,array('bạn không có quyền vào trang này'));
-            $this->load->header($this->data['meta']);
+            $this->load->footer($this->data['meta']);
             die();
         }
         if($type == null) 

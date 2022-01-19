@@ -52,7 +52,12 @@ class User extends Controller
 					setcookie('username', $_SESSION['username'], time() + 86400, '/');
 					setcookie('password', md5($infoUser['password']), time() + 86400, '/');
 				}
-				redirect(base_url().'/user');
+				$_SESSION['alert'] = 'Đăng nhập thành công!';
+				if ($infoUser['level'] > 5) {
+					redirect(base_url().'/admin');
+				} else {
+					redirect(base_url().'/');
+				}
 			} else {
 				show_alert(3, array('Tên đăng nhập không đúng'));
 				$this->showForm(1);
@@ -105,7 +110,11 @@ class User extends Controller
 				$this->Muser->register($data);
 				$recheck = $this->Muser->checkInfor($data["username"]);
 				if ($recheck && count($recheck)) {
-					show_alert(1, array('Đăng kí thành công'));
+					//show_alert(1, array('Đăng kí thành công'));
+					$_SESSION['alert'] = 'Đăng ký thành công, bạn đã có thể đăng nhập tại đây!';
+					redirect(base_url().'/user/login');
+				} else {
+					show_alert(2, array('Đăng ký thất bại'));
 				}
 			}
 		} else {
@@ -117,8 +126,7 @@ class User extends Controller
         session_destroy();
         setcookie('username','',time()-86400, '/');
         setcookie('password','',time()-86400, '/');
-        show_alert(1,array('Đăng xuất thành công'));
-        $this->showForm(1);
+        $_SESSION['alert'] = 'Đăng xuất thành công!';
 		redirect(base_url().'/user/login/');
     }
 	function showForm($type)
@@ -132,6 +140,13 @@ class User extends Controller
 
 	function change_info()
     {
+    	if(!isLogin()) {
+    	    $this->data['meta']['title'] = 'Stop !!!';
+    	    $this->load->header($this->data['meta']);
+    	    show_alert(3,array('bạn không có quyền vào trang này'));
+    	    $this->load->footer($this->data['meta']);
+    	    die();
+    	}
         $infoUser  = $this->Muser->getInfor($_SESSION['username'], $_SESSION['password']);
         if(!empty($_POST))
         {
