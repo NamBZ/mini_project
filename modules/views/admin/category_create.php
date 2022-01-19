@@ -5,11 +5,11 @@
     <div class="panel-body">
         <form action="<?php echo base_url(); ?>/admin/category/create" method="post">
             <div class="form-group">
-                <label for="name">Tên Chuyên Mục:</label>
+                <label for="name">Tên Chuyên Mục: </label><span style="color:red;">*</span>
                 <input class="form-control" type="text" id="name" name="name" value="<?php echo stripslashes($data["name"]['value']); ?>">
             </div>
             <div class="form-group">
-                <label for="slug">Url Chuyên Mục (Slug):</label>
+                <label for="slug">Url Chuyên Mục (Slug):</label><span style="color:red;">*</span>
                 <input class="form-control" type="slug" id="slug" name="slug" placeholder="ten-chuyen-muc" value="<?php echo $data["slug"]['value']; ?>">
             </div>
             <div class="form-group">

@@ -6,11 +6,11 @@
     <div class="list-group">
         <form action="" enctype="multipart/form-data" method="post" name="main-form">
         <div class="form-group list-group-item">
-            <label for="title">Tiêu Đề </label>
+            <label for="title">Tiêu Đề </label><span style="color:red;">*</span>
             <input class="form-control" type="text" name="name" id="title" value="<?php echo stripslashes($data["title"]['value']); ?>">
         </div>
         <div class="form-group list-group-item">
-            <label for="slug">Url Bài Viết </label>
+            <label for="slug">Url Bài Viết </label><span style="color:red;">*</span>
             <input class="form-control" type="text" name="slug" id="slug" value="<?php echo $data["slug"]['value']; ?>">
         </div>
         <div class="form-group list-group-item">

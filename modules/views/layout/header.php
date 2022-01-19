@@ -49,15 +49,25 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <?php if(!isLogin()) { ?>
-                    <li><a href="<?php echo base_url(); ?>/user/register"><i class="fa fa-plus"></i> Đăng Ký</a></li>
-                    <li><a href="<?php echo base_url(); ?>/user/login"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
-                    <li><a href="<?php echo base_url(); ?>/user/remember"><i class="fa fa-question"></i>
-                            Quên MK?</a></li>
+                    <?php if (!isLogin()) { ?>
+                        <li><a href="<?php echo base_url(); ?>/user/register"><i class="fa fa-plus"></i> Đăng Ký</a></li>
+                        <li><a href="<?php echo base_url(); ?>/user/login"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                        <li><a href="<?php echo base_url(); ?>/user/remember"><i class="fa fa-question"></i>
+                                Quên MK?</a></li>
                     <?php } else { ?>
-                    <li><a href="<?php echo base_url(); ?>/admin/"><i class="fa fa-user"></i> Quản trị</a></li>
-                    <li><a href="<?php echo base_url(); ?>/admin/posts"><i class="fa fa-plus"></i> Thêm bài viết</a></li>
-                    <li><a href="<?php echo base_url(); ?>/user/logout"><i class="fa fa-sign-out"></i> Đăng xuất</a></li>
+                        <?php if ($_SESSION["level"] == 9) { ?>
+                            <li><a href="<?php echo base_url(); ?>/admin/"><i class="fa fa-user"></i> Quản trị</a></li>
+                        <?php } else { ?>
+                            <li><a href="<?php echo base_url(); ?>/admin/posts"><i class="fa fa-plus"></i> Tạo bài viết</a></li>
+                        <?php } ?>
+                        <li class="dropdown" >
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="caret"></span><?php echo ' '.$_SESSION['username'];?></a>
+                            <ul class="dropdown-menu" role="menu">
+                            <li><a href="<?php echo base_url(); ?>/user/change_info"><i class="fa fa-cog"></i> Chỉnh sửa profile</a></li>
+                                <li class="divider"></li>
+                                <li><a href="<?php echo base_url(); ?>/user/logout"><i class="fa fa-sign-out"></i> Đăng xuất</a></li>
+                            </ul>
+                        </li>
                     <?php }  ?>
                 </ul>
             </div>

@@ -29,6 +29,11 @@ class User extends Controller
 	{
 		if (isLogin() == true) {
 			show_alert(4, array('Đã đăng nhập'));
+			if($_SESSION['level'] < 9){
+				header("Location:" .base_url());
+			} else {
+				header("Location:" .base_url()."/admin");
+			}
 		} else {
 			show_alert(4, array('Nhập Thông Tin Đăng Nhập'));
 			$this->load->view('user/form-login');
